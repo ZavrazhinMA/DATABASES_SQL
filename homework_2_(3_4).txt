@@ -1,0 +1,87 @@
+3. Создайте дамп базы данных example из предыдущего задания, разверните содержимое дампа в новую базу данных sample.
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| example            |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| shop               |
+| sys                |
+| world              |
++--------------------+
+8 rows in set (0.01 sec)
+
+C:\Users\...\TEST>mysqldump example > dump_example.sql -u root -p
+Enter password: ****
+
+mysql> CREATE DATABASE sample;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use sample;
+Database changed
+mysql> SOURCE dump_example.sql;
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+...
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| example            |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sample             |
+| shop               |
+| sys                |
+| world              |
++--------------------+
+9 rows in set (0.00 sec)
+mysql> DESCRIBE users;
++-------+--------------+------+-----+---------+-------+
+| Field | Type         | Null | Key | Default | Extra |
++-------+--------------+------+-----+---------+-------+
+| id    | int unsigned | YES  |     | NULL    |       |
+| name  | varchar(255) | YES  |     | NULL    |       |
++-------+--------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+_______________________________________________________________________________________________________________________
+4.(по желанию) Ознакомьтесь более подробно с документацией утилиты mysqldump. Создайте дамп единственной таблицы help_keyword базы данных mysql.
+Причем добейтесь того, чтобы дамп содержал только первые 100 строк таблицы.
+
+C:\Users\...\TEST>mysqldump -u root -p --where="true limit 100" mysql help_keyword > dump100mysql.sql
+Enter password: ****
+
+mysql> SOURCE dump100mysql.sql
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+......
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT * FROM help_keyword;
++-----------------+----------------------+
+| help_keyword_id | name                 |
++-----------------+----------------------+
+|             226 | (JSON                |
+|             227 | ->                   |
+|             229 | ->>                  |
+|              46 | <>                   |
+|             637 | ACCOUNT              |
+|             439 | ACTION               |
+..........................................
+|             519 | CROSS                |
+|             444 | CSV                  |
+|             270 | CUME_DIST            |
+|             640 | CURRENT              |
+|             116 | CURRENT_ROLE         |
++-----------------+----------------------+
+100 rows in set (0.00 sec)
