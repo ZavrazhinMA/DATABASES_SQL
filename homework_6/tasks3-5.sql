@@ -4,16 +4,16 @@ USE vk;
 SELECT * FROM likes;
 SELECT * FROM profiles;
 
-SELECT COUNT(*) AS total, gender FROM PROFILES WHERE user_id IN (SELECT user_id FROM likes) GROUP BY gender;
+SELECT COUNT(id) AS total, (SELECT gender FROM profiles WHERE user_id = likes.user_id) AS gender FROM likes GROUP BY gender;
 
 SELECT IF
 (
-(SELECT COUNT(*) FROM PROFILES WHERE user_id IN (SELECT user_id FROM likes) and gender ="M")>
-(SELECT COUNT(*) FROM PROFILES WHERE user_id IN (SELECT user_id FROM likes) and gender ="F"),'мужчины поставили больше лайков', 
+(SELECT COUNT(id) FROM likes WHERE (SELECT gender FROM profiles WHERE user_id = likes.user_id) ='M')>
+(SELECT COUNT(id) FROM likes WHERE (SELECT gender FROM profiles WHERE user_id = likes.user_id) ='F'),'мужчины поставили больше лайков', 
 IF 
 (
-(SELECT COUNT(*) FROM PROFILES WHERE user_id IN (SELECT user_id FROM likes) and gender ="M")=
-(SELECT COUNT(*) FROM PROFILES WHERE user_id IN (SELECT user_id FROM likes) and gender ="F"),'мужчины и женщины поставили одинаковое количество лайков', 'женщины поставили больше лайков'
+(SELECT COUNT(id) FROM likes WHERE (SELECT gender FROM profiles WHERE user_id = likes.user_id) ='M')=
+(SELECT COUNT(id) FROM likes WHERE (SELECT gender FROM profiles WHERE user_id = likes.user_id) ='F'),'мужчины и женщины поставили одинаковое количество лайков', 'женщины поставили больше лайков'
 ));
 
 -- UPDATE profiles SET gender = "M" WHERE user_id = (FLOOR(1+RAND()*100));
