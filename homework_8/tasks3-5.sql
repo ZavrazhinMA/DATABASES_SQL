@@ -67,7 +67,7 @@ SELECT COUNT(likes.id) AS total_likes
 -- 5. Найти 10 пользователей, которые проявляют наименьшую активность в использовании социальной сети
 -- (критерии активности необходимо определить самостоятельно).
 
-			
+DESC communities_users ;			
 			
 SELECT id, first_name, last_name, 
 (
@@ -79,15 +79,15 @@ SELECT id, first_name, last_name,
 ) AS total_activity
 FROM users
 ORDER BY total_activity, first_name 
-LIMIT 10;
+LIMIT 100;
 
 -- *********************************************
 SELECT users.id, users.first_name, users.last_name,
-	   COUNT(likes.user_id) + 
-       COUNT(messages.from_user_id) +
-       COUNT(media.user_id) +
-       COUNT(posts.user_id) +
-       COUNT(communities_users.user_id)
+	   COUNT(DISTINCT(likes.id)) + 
+       COUNT(DISTINCT(messages.id)) +
+       COUNT(DISTINCT(media.id)) +
+       COUNT(DISTINCT(posts.id)) +
+       COUNT(DISTINCT(communities_users.community_id))
        AS total_activity
   FROM users
   LEFT JOIN likes
@@ -102,4 +102,4 @@ SELECT users.id, users.first_name, users.last_name,
        ON communities_users.user_id = users.id
  GROUP BY users.id
  ORDER BY total_activity, users.first_name
- LIMIT 10;
+ LIMIT 100;
